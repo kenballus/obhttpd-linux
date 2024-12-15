@@ -30,7 +30,7 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <sys/stat.h>
-#include <sys/queue.h>
+#include <bsd/sys/queue.h>
 #include <bsd/sys/tree.h>
 #include <sys/ioctl.h>
 #include <linux/sockios.h>

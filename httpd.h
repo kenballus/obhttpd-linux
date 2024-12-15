@@ -23,7 +23,7 @@
 
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <sys/queue.h>
+#include <bsd/sys/queue.h>
 #include <bsd/sys/tree.h>
 #include <sys/time.h>
 

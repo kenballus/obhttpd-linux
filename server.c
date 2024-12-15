@@ -17,7 +17,7 @@
  */
 
 #include <sys/types.h>
-#include <sys/queue.h>
+#include <bsd/sys/queue.h>
 #include <sys/time.h>
 #include <sys/stat.h>
 #include <sys/socket.h>

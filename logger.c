@@ -17,7 +17,7 @@
  */
 
 #include <sys/types.h>
-#include <sys/queue.h>
+#include <bsd/sys/queue.h>
 #include <sys/uio.h>
 
 #include <limits.h>
