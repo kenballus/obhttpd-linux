@@ -26,7 +26,7 @@
 
 #include <limits.h>
 #include <errno.h>
-#include <stdlib.h>
+#include <bsd/stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
@@ -105,7 +105,7 @@ server_fcgi(struct httpd *env, struct client *clt)
 	    SOCK_STREAM | SOCK_NONBLOCK, 0)) == -1)
 		goto fail;
 	if ((connect(fd, (struct sockaddr *) &srv_conf->fastcgi_ss,
-	    srv_conf->fastcgi_ss.ss_len)) == -1) {
+	    sizeof(srv_conf->fastcgi_ss))) == -1) {
 		if (errno != EINPROGRESS)
 			goto fail;
 	}
