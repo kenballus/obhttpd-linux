@@ -17,6 +17,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#define _GNU_SOURCE
 #include <sys/types.h>
 #include <bsd/sys/queue.h>
 #include <sys/socket.h>
@@ -26,7 +27,7 @@
 #include <errno.h>
 #include <endian.h>
 #include <stdint.h>
-#include <stdlib.h>
+#include <bsd/stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
