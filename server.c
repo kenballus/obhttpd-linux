@@ -40,7 +40,7 @@
 #include <event.h>
 #include <imsg.h>
 #include <tls.h>
-#include <vis.h>
+#include <bsd/vis.h>
 
 #include "httpd.h"
 
