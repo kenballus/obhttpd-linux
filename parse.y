@@ -2182,9 +2182,7 @@ host_if(const char *s, struct addresslist *al, int max,
  nextaf:
 	for (p = ifap; p != NULL && cnt < max; p = p->ifa_next) {
 		if (p->ifa_addr == NULL ||
-		    p->ifa_addr->sa_family != af ||
-		    (strcmp(s, p->ifa_name) != 0 &&
-		    !is_if_in_group(p->ifa_name, s)))
+		    p->ifa_addr->sa_family != af)
 			continue;
 		if ((h = calloc(1, sizeof(*h))) == NULL)
 			fatal("calloc");
@@ -2480,50 +2478,6 @@ getservice(char *n)
 	}
 
 	return (htons((unsigned short)llval));
-}
-
-int
-is_if_in_group(const char *ifname, const char *groupname)
-{
-	unsigned int		 len;
-	struct ifgroupreq	 ifgr;
-	struct ifg_req		*ifg;
-	int			 s;
-	int			 ret = 0;
-
-	if ((s = socket(AF_INET, SOCK_DGRAM, 0)) == -1)
-		err(1, "socket");
-
-	memset(&ifgr, 0, sizeof(ifgr));
-	if (strlcpy(ifgr.ifgr_name, ifname, IFNAMSIZ) >= IFNAMSIZ)
-		err(1, "IFNAMSIZ");
-	if (ioctl(s, SIOCGIFGROUP, (caddr_t)&ifgr) == -1) {
-		if (errno == EINVAL || errno == ENOTTY)
-			goto end;
-		err(1, "SIOCGIFGROUP");
-	}
-
-	len = ifgr.ifgr_len;
-	ifgr.ifgr_groups = calloc(len / sizeof(struct ifg_req),
-	    sizeof(struct ifg_req));
-	if (ifgr.ifgr_groups == NULL)
-		err(1, "getifgroups");
-	if (ioctl(s, SIOCGIFGROUP, (caddr_t)&ifgr) == -1)
-		err(1, "SIOCGIFGROUP");
-
-	ifg = ifgr.ifgr_groups;
-	for (; ifg && len >= sizeof(struct ifg_req); ifg++) {
-		len -= sizeof(struct ifg_req);
-		if (strcmp(ifg->ifgrq_group, groupname) == 0) {
-			ret = 1;
-			break;
-		}
-	}
-	free(ifgr.ifgr_groups);
-
-end:
-	close(s);
-	return (ret);
 }
 
 int
