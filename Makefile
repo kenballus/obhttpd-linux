@@ -17,8 +17,8 @@ CFLAGS+=	-Wstrict-prototypes -Wmissing-prototypes
 CFLAGS+=	-Wmissing-declarations
 CFLAGS+=	-Wshadow -Wpointer-arith
 CFLAGS+=	-Wsign-compare -Wcast-qual
-CFLAGS+=	-D__dead='__attribute__((noreturn))'
-CFLAGS+=	-Wno-cpp -Wno-format -Wno-unused-variable
+CFLAGS+=	-D__dead='__attribute__((noreturn))' '-Dpledge(...)=0'
+CFLAGS+=	-Wno-cpp -Wno-format -Wno-unused-variable -Wno-pointer-sign
 YFLAGS=
 
 .for h in css.h js.h
