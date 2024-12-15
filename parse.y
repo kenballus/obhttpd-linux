@@ -31,7 +31,7 @@
 #include <sys/un.h>
 #include <sys/stat.h>
 #include <sys/queue.h>
-#include <sys/tree.h>
+#include <bsd/sys/tree.h>
 #include <sys/ioctl.h>
 #include <sys/sockio.h>
 #include <sys/time.h>

@@ -22,7 +22,7 @@
 #include <sys/stat.h>
 #include <sys/socket.h>
 #include <sys/uio.h>
-#include <sys/tree.h>
+#include <bsd/sys/tree.h>
 
 #include <netinet/in.h>
 #include <netinet/tcp.h>
