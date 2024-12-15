@@ -809,7 +809,7 @@ server_tls_readcb(int fd, short event, void *arg)
 		goto err;
 	}
 
-	server_bufferevent_add(&bufev->ev_read, bufev->timeout_read);
+	server_bufferevent_add(&bufev->ev_read, bufev->timeout_read.tv_sec);
 
 	len = EVBUFFER_LENGTH(bufev->input);
 	if (bufev->wm_read.low != 0 && len < bufev->wm_read.low)
@@ -826,7 +826,7 @@ server_tls_readcb(int fd, short event, void *arg)
 	return;
 
  retry:
-	server_bufferevent_add(&bufev->ev_read, bufev->timeout_read);
+	server_bufferevent_add(&bufev->ev_read, bufev->timeout_read.tv_sec);
 	return;
 
  err:
@@ -862,7 +862,7 @@ server_tls_writecb(int fd, short event, void *arg)
 	}
 
 	if (EVBUFFER_LENGTH(bufev->output) != 0)
-		server_bufferevent_add(&bufev->ev_write, bufev->timeout_write);
+		server_bufferevent_add(&bufev->ev_write, bufev->timeout_write.tv_sec);
 
 	if (bufev->writecb != NULL &&
 	    EVBUFFER_LENGTH(bufev->output) <= bufev->wm_write.low)
@@ -870,7 +870,7 @@ server_tls_writecb(int fd, short event, void *arg)
 	return;
 
  retry:
-	server_bufferevent_add(&bufev->ev_write, bufev->timeout_write);
+	server_bufferevent_add(&bufev->ev_write, bufev->timeout_write.tv_sec);
 	return;
 
  err:
