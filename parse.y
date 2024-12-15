@@ -52,6 +52,7 @@
 #include <string.h>
 #include <ifaddrs.h>
 #include <syslog.h>
+#include <stdlib.h>
 
 #include "httpd.h"
 #include "http.h"
