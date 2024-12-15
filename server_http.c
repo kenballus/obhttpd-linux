@@ -37,7 +37,7 @@
 #include <resolv.h>
 #include <event.h>
 #include <ctype.h>
-#include <vis.h>
+#include <bsd/vis.h>
 #include <fcntl.h>
 
 #include "httpd.h"
