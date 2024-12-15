@@ -16,6 +16,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#define _GNU_SOURCE
 #include <sys/types.h>
 #include <bsd/sys/queue.h>
 #include <sys/socket.h>
@@ -913,11 +914,6 @@ accept_reserve(int sockfd, struct sockaddr *addr, socklen_t *addrlen,
     int reserve, volatile int *counter)
 {
 	int ret;
-	if (getdtablecount() + reserve +
-	    *counter >= getdtablesize()) {
-		errno = EMFILE;
-		return (-1);
-	}
 
 	if ((ret = accept4(sockfd, addr, addrlen, SOCK_NONBLOCK)) > -1) {
 		(*counter)++;
@@ -1206,7 +1202,7 @@ auth_free(struct serverauth *serverauth, struct auth *auth)
 const char *
 print_host(struct sockaddr_storage *ss, char *buf, size_t len)
 {
-	if (getnameinfo((struct sockaddr *)ss, ss->ss_len,
+	if (getnameinfo((struct sockaddr *)ss, sizeof(*ss),
 	    buf, len, NULL, 0, NI_NUMERICHOST) != 0) {
 		buf[0] = '\0';
 		return (NULL);
