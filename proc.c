@@ -17,6 +17,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#define _GNU_SOURCE
 #include <sys/types.h>
 #include <bsd/sys/queue.h>
 #include <sys/socket.h>
@@ -25,7 +26,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <bsd/unistd.h>
 #include <string.h>
 #include <errno.h>
 #include <signal.h>
@@ -33,6 +34,7 @@
 #include <pwd.h>
 #include <event.h>
 #include <imsg.h>
+#include <grp.h>
 
 #include "httpd.h"
 
