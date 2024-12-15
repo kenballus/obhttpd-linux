@@ -183,11 +183,11 @@ server_http_authenticate(struct server_config *srv_conf, struct client *clt)
 			continue;
 		}
 
-		if (crypt_checkpass(clt_pass, pass) == 0) {
-			explicit_bzero(line, linelen);
-			ret = 0;
-			break;
-		}
+		// if (crypt_checkpass(clt_pass, pass) == 0) {
+		// 	explicit_bzero(line, linelen);
+		// 	ret = 0;
+		// 	break;
+		// }
 	}
 done:
 	free(line);
