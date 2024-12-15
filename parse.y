@@ -297,7 +297,7 @@ server		: SERVER optmatch STRING	{
 			sun->sun_family = AF_UNIX;
 			(void)strlcpy(sun->sun_path, HTTPD_FCGI_SOCKET,
 			    sizeof(sun->sun_path));
-			sun->sun_len = sizeof(struct sockaddr_un);
+			// sun->sun_len = sizeof(struct sockaddr_un);
 
 			s->srv_conf.hsts_max_age = SERVER_HSTS_DEFAULT_AGE;
 
@@ -602,7 +602,7 @@ serveroptsl	: LISTEN ON STRING opttls port	{
 			sun->sun_family = AF_UNIX;
 			(void)strlcpy(sun->sun_path, HTTPD_FCGI_SOCKET,
 			    sizeof(sun->sun_path));
-			sun->sun_len = sizeof(struct sockaddr_un);
+			// sun->sun_len = sizeof(struct sockaddr_un);
 
 			s->srv_conf.id = ++last_server_id;
 			/* A location entry uses the parent id */
@@ -750,8 +750,8 @@ fcgiflags	: SOCKET STRING {
 				free($2);
 				YYERROR;
 			}
-			srv_conf->fastcgi_ss.ss_len =
-			    sizeof(struct sockaddr_un);
+			// srv_conf->fastcgi_ss.ss_len =
+			//    sizeof(struct sockaddr_un);
 			free($2);
 		}
 		| SOCKET TCP STRING {
@@ -2047,7 +2047,7 @@ host_v4(const char *s)
 	if ((h = calloc(1, sizeof(*h))) == NULL)
 		fatal(__func__);
 	sain = (struct sockaddr_in *)&h->ss;
-	sain->sin_len = sizeof(struct sockaddr_in);
+	// sain->sin_len = sizeof(struct sockaddr_in);
 	sain->sin_family = AF_INET;
 	sain->sin_addr.s_addr = ina.s_addr;
 	if (sain->sin_addr.s_addr == INADDR_ANY)
@@ -2072,7 +2072,7 @@ host_v6(const char *s)
 		if ((h = calloc(1, sizeof(*h))) == NULL)
 			fatal(__func__);
 		sa_in6 = (struct sockaddr_in6 *)&h->ss;
-		sa_in6->sin6_len = sizeof(struct sockaddr_in6);
+		// sa_in6->sin6_len = sizeof(struct sockaddr_in6);
 		sa_in6->sin6_family = AF_INET6;
 		memcpy(&sa_in6->sin6_addr,
 		    &((struct sockaddr_in6 *)res->ai_addr)->sin6_addr,
@@ -2141,12 +2141,12 @@ host_dns(const char *s, struct addresslist *al, int max,
 
 		if (res->ai_family == AF_INET) {
 			sain = (struct sockaddr_in *)&h->ss;
-			sain->sin_len = sizeof(struct sockaddr_in);
+			// sain->sin_len = sizeof(struct sockaddr_in);
 			sain->sin_addr.s_addr = ((struct sockaddr_in *)
 			    res->ai_addr)->sin_addr.s_addr;
 		} else {
 			sin6 = (struct sockaddr_in6 *)&h->ss;
-			sin6->sin6_len = sizeof(struct sockaddr_in6);
+			// sin6->sin6_len = sizeof(struct sockaddr_in6);
 			memcpy(&sin6->sin6_addr, &((struct sockaddr_in6 *)
 			    res->ai_addr)->sin6_addr, sizeof(struct in6_addr));
 		}
@@ -2206,12 +2206,12 @@ host_if(const char *s, struct addresslist *al, int max,
 
 		if (af == AF_INET) {
 			sain = (struct sockaddr_in *)&h->ss;
-			sain->sin_len = sizeof(struct sockaddr_in);
+			// sain->sin_len = sizeof(struct sockaddr_in);
 			sain->sin_addr.s_addr = ((struct sockaddr_in *)
 			    p->ifa_addr)->sin_addr.s_addr;
 		} else {
 			sin6 = (struct sockaddr_in6 *)&h->ss;
-			sin6->sin6_len = sizeof(struct sockaddr_in6);
+			// sin6->sin6_len = sizeof(struct sockaddr_in6);
 			memcpy(&sin6->sin6_addr, &((struct sockaddr_in6 *)
 			    p->ifa_addr)->sin6_addr, sizeof(struct in6_addr));
 			sin6->sin6_scope_id = ((struct sockaddr_in6 *)
