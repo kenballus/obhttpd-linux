@@ -718,13 +718,7 @@ server_socket(struct sockaddr_storage *ss, in_port_t port,
 			goto bad;
 	}
 	if (srv_conf->tcpflags & (TCPFLAG_SACK|TCPFLAG_NSACK)) {
-		if (srv_conf->tcpflags & TCPFLAG_NSACK)
-			val = 0;
-		else
-			val = 1;
-		if (setsockopt(s, IPPROTO_TCP, TCP_SACK_ENABLE,
-		    &val, sizeof(val)) == -1)
-			goto bad;
+		goto bad;
 	}
 
 	return (s);
@@ -744,7 +738,7 @@ server_socket_listen(struct sockaddr_storage *ss, in_port_t port,
 	if ((s = server_socket(ss, port, srv_conf, -1, 1)) == -1)
 		return (-1);
 
-	if (bind(s, (struct sockaddr *)ss, ss->ss_len) == -1)
+	if (bind(s, (struct sockaddr *)ss, sizeof(*ss)) == -1)
 		goto bad;
 	if (listen(s, srv_conf->tcpbacklog) == -1)
 		goto bad;
@@ -765,7 +759,7 @@ server_socket_connect(struct sockaddr_storage *ss, in_port_t port,
 	if ((s = server_socket(ss, port, srv_conf, -1, 0)) == -1)
 		return (-1);
 
-	if (connect(s, (struct sockaddr *)ss, ss->ss_len) == -1) {
+	if (connect(s, (struct sockaddr *)ss, sizeof(*ss)) == -1) {
 		if (errno != EINPROGRESS)
 			goto bad;
 	}
