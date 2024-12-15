@@ -18,6 +18,7 @@ CFLAGS+=	-Wmissing-declarations
 CFLAGS+=	-Wshadow -Wpointer-arith
 CFLAGS+=	-Wsign-compare -Wcast-qual
 CFLAGS+=	-D__dead='__attribute__((noreturn))'
+CFLAGS+=	-Wno-cpp -Wno-format -Wno-unused-variable
 YFLAGS=
 
 .for h in css.h js.h
@@ -27,6 +28,6 @@ $h: $h.in
 
 server_file.o: css.h js.h
 
-CLEANFILES += css.h js.h
+CLEANFILES += css.h js.h parse.c
 
 .include <bsd.prog.mk>
