@@ -69,8 +69,33 @@ void		 server_accept(int, short, void *);
 void		 server_input(struct client *);
 void		 server_inflight_dec(struct client *, const char *);
 
-extern void	 bufferevent_read_pressure_cb(struct evbuffer *, size_t,
-		    size_t, void *);
+static int bufferevent_add(struct event *ev, int timeout)
+{
+	struct timeval tv, *ptv = NULL;
+
+	if (timeout) {
+		timerclear(&tv);
+		tv.tv_sec = timeout;
+		ptv = &tv;
+	}
+
+	return (event_add(ev, ptv));
+}
+
+static void bufferevent_read_pressure_cb(struct evbuffer *buf, size_t old, size_t now,
+    void *arg) {
+	struct bufferevent *bufev = arg;
+	/*
+	 * If we are below the watermark then reschedule reading if it's
+	 * still enabled.
+	 */
+	if (bufev->wm_read.high == 0 || now < bufev->wm_read.high) {
+		evbuffer_setcb(buf, NULL, NULL);
+
+		if (bufev->enabled & EV_READ)
+			bufferevent_add(&bufev->ev_read, bufev->timeout_read.tv_sec);
+	}
+}
 
 volatile int server_clients;
 volatile int server_inflight = 0;
