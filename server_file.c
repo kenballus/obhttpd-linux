@@ -16,21 +16,21 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#define _GNU_SOURCE
 #include <sys/types.h>
-#include <sys/time.h>
+#include <bsd/sys/time.h>
 #include <sys/stat.h>
 
 #include <limits.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <stdlib.h>
+#include <bsd/stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <dirent.h>
 #include <time.h>
 #include <event.h>
-#include <util.h>
 
 #include "httpd.h"
 #include "http.h"
@@ -39,6 +39,13 @@
 
 #define MINIMUM(a, b)	(((a) < (b)) ? (a) : (b))
 #define MAXIMUM(a, b)	(((a) > (b)) ? (a) : (b))
+
+static char const FMT_SCALED_RESULT[] = "size unknown";
+static size_t const FMT_SCALED_STRSIZE = sizeof(FMT_SCALED_RESULT);
+static int fmt_scaled(long long input, char *result) {
+    memcpy(result, FMT_SCALED_RESULT, FMT_SCALED_STRSIZE);
+    return 0;
+}
 
 int		 server_file_access(struct httpd *, struct client *,
 		    char *, size_t);
