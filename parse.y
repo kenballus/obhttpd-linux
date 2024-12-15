@@ -33,7 +33,7 @@
 #include <sys/queue.h>
 #include <bsd/sys/tree.h>
 #include <sys/ioctl.h>
-#include <sys/sockio.h>
+#include <linux/sockios.h>
 #include <sys/time.h>
 
 #include <net/if.h>
