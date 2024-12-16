@@ -743,6 +743,12 @@ server_socket(struct sockaddr_storage *ss, in_port_t port,
 			goto bad;
 	}
 	if (srv_conf->tcpflags & (TCPFLAG_SACK|TCPFLAG_NSACK)) {
+		if (srv_conf->tcpflags & TCPFLAG_NSACK)
+			val = 0;
+		else
+			val = 1;
+		if (setsockopt(s, IPPROTO_TCP, TCPOPT_SACK,
+			&val, sizeof(val)) == -1)
 		goto bad;
 	}
 
