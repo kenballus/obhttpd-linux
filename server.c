@@ -627,13 +627,9 @@ server_socket_af(struct sockaddr_storage *ss, in_port_t port)
 	switch (ss->ss_family) {
 	case AF_INET:
 		((struct sockaddr_in *)ss)->sin_port = port;
-		// ((struct sockaddr_in *)ss)->sin_len =
-		//     sizeof(struct sockaddr_in);
 		break;
 	case AF_INET6:
 		((struct sockaddr_in6 *)ss)->sin6_port = port;
-		// ((struct sockaddr_in6 *)ss)->sin6_len =
-		//     sizeof(struct sockaddr_in6);
 		break;
 	default:
 		return (-1);
@@ -748,8 +744,8 @@ server_socket(struct sockaddr_storage *ss, in_port_t port,
 		else
 			val = 1;
 		if (setsockopt(s, IPPROTO_TCP, TCPOPT_SACK,
-			&val, sizeof(val)) == -1)
-		goto bad;
+		    &val, sizeof(val)) == -1)
+			goto bad;
 	}
 
 	return (s);
