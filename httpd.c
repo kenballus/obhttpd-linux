@@ -1224,7 +1224,7 @@ printb_flags(const uint32_t v, const char *bits)
 	if (bits) {
 		bits++;
 		while ((i = *bits++)) {
-			if (v & (1 << (i - 1))) {
+			if (v & (1u << (i - 1))) {
 				if (any) {
 					*p++ = ',';
 					*p++ = ' ';
