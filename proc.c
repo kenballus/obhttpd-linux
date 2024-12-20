@@ -546,6 +546,8 @@ proc_run(struct privsep *ps, struct privsep_proc *p,
 
 	privsep_process = p->p_id;
 
+	setproctitle("%s", p->p_title);
+
 	if (setgroups(1, &pw->pw_gid) ||
 	    setresgid(pw->pw_gid, pw->pw_gid, pw->pw_gid) ||
 	    setresuid(pw->pw_uid, pw->pw_uid, pw->pw_uid))
