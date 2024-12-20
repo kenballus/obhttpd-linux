@@ -42,6 +42,7 @@
 #include <ctype.h>
 #include <pwd.h>
 #include <fcntl.h>
+#include <glob.h>
 
 #include "httpd.h"
 
@@ -911,11 +912,19 @@ prefixlen2mask6(uint8_t prefixlen, uint32_t *mask)
 }
 
 static int getdtablecount(void) {
-    int result = 0;
-    for (int i = 0; i < getdtablesize(); i++) {
-        result += fcntl(i, F_GETFD) != -1;
+    // Pulled from tmux's compat/getdtablecount.c
+	char path[PATH_MAX];
+	glob_t g;
+	int	n = 0;
+
+	if (snprintf(path, sizeof(path), "/proc/%ld/fd/*", (long)getpid()) < 0) {
+		fatal("snprintf overflow");
     }
-    return result;
+	if (glob(path, 0, NULL, &g) == 0) {
+		n = g.gl_pathc;
+    }
+	globfree(&g);
+	return n;
 }
 
 int
