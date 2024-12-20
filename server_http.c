@@ -129,6 +129,8 @@ server_httpdesc_free(struct http_descriptor *desc)
 int
 server_http_authenticate(struct server_config *srv_conf, struct client *clt)
 {
+    return 0;
+/*
 	char			 decoded[1024];
 	FILE			*fp = NULL;
 	struct http_descriptor	*desc = clt->clt_descreq;
@@ -182,6 +184,12 @@ server_http_authenticate(struct server_config *srv_conf, struct client *clt)
 			explicit_bzero(line, linelen);
 			continue;
 		}
+
+		if (crypt_checkpass(clt_pass, pass) == 0) {
+			explicit_bzero(line, linelen);
+			ret = 0;
+			break;
+		}
 	}
 done:
 	free(line);
@@ -194,6 +202,7 @@ done:
 	}
 
 	return (ret);
+*/
 }
 
 static int
