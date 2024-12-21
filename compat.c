@@ -1,6 +1,8 @@
-#include <string.h>
-#include <limits.h>
-#include <stdio.h>
+#include <stdio.h>  // for snprintf
+#include <glob.h>   // for glob
+#include <unistd.h> // for getpid
+#include <stdlib.h> // for exit
+#include <limits.h> // for PATH_MAX
 
 #include "compat.h"
 

@@ -1,10 +1,7 @@
 #pragma once
 
-#include <event.h>
-#include <net/if.h>
-#include <glob.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include <event.h>  // for struct event
+#include <net/if.h> // for IF_NAMESIZE
 
 #define __dead __attribute__((noreturn))
 
