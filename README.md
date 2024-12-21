@@ -2,7 +2,7 @@
 
 This is a port of OpenBSD's httpd to GNU/Linux.
 
-It's been tested on aarch64 Fedora 41 and amd64 Debian 13 (testing), and basic funtionality is good.
+It's been tested on aarch64 Fedora 41 and amd64 Debian 13 (testing), and basic functionality is good.
 
 # Building
 
