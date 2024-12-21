@@ -11,10 +11,11 @@ This project's Debian requirements are
 - git
 - bmake
 - byacc
+- groff
+- libc6-dev
 - libbsd-dev
 - libtls-dev
 - libssl-dev
-- groff
 - libevent-dev
 
 For other distributions, it's similar.
