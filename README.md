@@ -8,6 +8,7 @@ It's been tested on aarch64 Fedora 41 and amd64 Debian 13 (testing), and basic f
 
 This project's Debian requirements are
 
+- git
 - bmake
 - byacc
 - libbsd-dev
