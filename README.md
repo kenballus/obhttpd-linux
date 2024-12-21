@@ -4,7 +4,7 @@ This is a port of OpenBSD's httpd to GNU/Linux.
 
 It's been tested on aarch64 Fedora 41 and amd64 Debian 13 (testing), and basic functionality is good.
 
-# Building
+## Building
 
 This project's Debian requirements are
 
@@ -30,7 +30,7 @@ This will
 3. patch those files to work on Linux,
 4. and build the httpd.
 
-# Missing Functionality
+## Missing Functionality
 
 I had to patch out two features from upstream:
 
