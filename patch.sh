@@ -1,11 +1,12 @@
-#!/bin/sh
-
-# This is the OpenBSD src commit hash that we're building from.
-# Feel free to change it, but I've only tested on the hash
-# below.
-COMMIT_HASH=76b1f2ebe5106c591f5eafcb9d7b05643509a2c4
+#!/bin/bash
 
 set -euo pipefail
+
+[[ -v OPENBSD_SRC_COMMIT_HASH ]] || OPENBSD_SRC_COMMIT_HASH='76b1f2ebe5106c591f5eafcb9d7b05643509a2c4'
+
+[[ -v OPENBSD_SRC_BRANCH ]] || OPENBSD_SRC_BRANCH='master'
+
+[[ -v OPENBSD_SRC_REPO ]] || OPENBSD_SRC_REPO='https://github.com/openbsd/src'
 
 # All .c files except compat.c
 C_SRC="control.c server_fcgi.c httpd.c imsg-buffer.c log.c proc.c server_file.c config.c imsg.c logger.c patterns.c server.c server_http.c fmt_scaled.c"
@@ -20,13 +21,13 @@ ALL_SRC="$C_AND_H_SRC parse.y"
 
 rm -f $ALL_SRC
 
-[ -d src ] || {
-    git clone https://github.com/openbsd/src
-    cd src
-    git pull
-    git checkout "$COMMIT_HASH"
-    cd ..
-}
+[ -d src ] || git clone "$OPENBSD_SRC_REPO"
+
+pushd src
+git pull origin "$OPENBSD_SRC_BRANCH"
+git checkout "$OPENBSD_SRC_COMMIT_HASH"
+popd
+
 cp src/usr.sbin/httpd/* .
 cp src/lib/libutil/imsg-buffer.c src/lib/libutil/imsg.c src/lib/libutil/imsg.h .
 cp src/lib/libutil/fmt_scaled.c src/lib/libutil/util.h .
