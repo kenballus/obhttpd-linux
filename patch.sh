@@ -68,7 +68,7 @@ sed -i 's/\(#include "http.h"\)/\1\n#include "compat.h"/' parse.y
 sed -i 's/#include <stdlib.h>/#include <bsd\/stdlib.h>/' httpd.c server.c server_http.c server_file.c server_fcgi.c imsg-buffer.c
 
 # Use libbsd unistd.h where necessary
-sed -i 's/#include <unistd.h>/#include <bsd\/unistd.h>/' proc.c
+sed -i 's/#include <unistd.h>/#include <bsd\/unistd.h>/' proc.c httpd.c
 
 # Include grp.h in proc.c (for setgroups)
 sed -i 's/\(#include <imsg.h>\)/\1\n#include <grp.h>/' proc.c
@@ -96,3 +96,15 @@ sed -i 's/\(char *\*fparseln.*\)/\/\/ \1/' util.h
 
 # Fix UB caused by invalid lshift
 sed -i 's/1 << (i - 1)/1u << (i - 1)/' httpd.c
+
+# Add envp to main for use in setproctitle_init
+sed -i 's/main(int argc, char \*argv\[\])/main(int argc, char *argv[], char *envp[])/' httpd.c
+
+# Use setproctitle_init
+sed -i 's/\(int[ \t]*argc0 = argc;\)/\1\n\n\tsetproctitle_init(argc, argv, envp);/' httpd.c
+
+# Increase MAX_IMSG_SIZE
+sed -i 's/#define MAX_IMSGSIZE[ \t].*/#define MAX_IMSGSIZE 32768/' imsg.h
+
+# Patch around differences between OpenBSD's event_del and upstream libevent's
+sed -i 's/event_del(\&clt->clt_ev);/if (clt->clt_ev.ev_base != NULL) event_del(\&clt->clt_ev);/' server.c
