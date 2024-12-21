@@ -1338,7 +1338,9 @@ server_close(struct client *clt, const char *msg)
 		tls_close(clt->clt_tls_ctx); /* XXX - error handling */
 	tls_free(clt->clt_tls_ctx);
 
-	event_del(&clt->clt_ev);
+    if (clt->clt_ev.ev_base != NULL) {
+    	event_del(&clt->clt_ev);
+    }
 	if (clt->clt_bev != NULL)
 		bufferevent_disable(clt->clt_bev, EV_READ|EV_WRITE);
 	if (clt->clt_srvbev != NULL)
