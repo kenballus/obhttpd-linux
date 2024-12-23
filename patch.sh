@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-[[ -v OPENBSD_SRC_COMMIT_HASH ]] || OPENBSD_SRC_COMMIT_HASH='76b1f2ebe5106c591f5eafcb9d7b05643509a2c4'
+[[ -v OPENBSD_SRC_VERSION ]] || OPENBSD_SRC_VERSION='76b1f2ebe5106c591f5eafcb9d7b05643509a2c4'
 
 [[ -v OPENBSD_SRC_BRANCH ]] || OPENBSD_SRC_BRANCH='master'
 
@@ -25,7 +25,7 @@ rm -f $ALL_SRC
 
 pushd src
 git pull origin "$OPENBSD_SRC_BRANCH"
-git checkout "$OPENBSD_SRC_COMMIT_HASH"
+git checkout "$OPENBSD_SRC_VERSION"
 popd
 
 cp src/usr.sbin/httpd/* .
