@@ -37,6 +37,5 @@ This will
 The changes necessary to get the port working shouldn't change functionality, except a few:
 
 1. The CLI flags having to do with TCP SACK are disabled, because they rely on `setsockopt` flags that aren't present on Linux.
-2. All HTTP authentication attempts are denied, because they would rely on `crypt_checkpass`, which isn't available on Linux.
-3. All references to network interface groups are patched out, because I don't think they're available on Linux.
-4. `pledge` is OpenBSD-specific, so I `#define` it to 0.
+2. All references to network interface groups are patched out, because I don't think they're available on Linux.
+3. `pledge` is OpenBSD-specific, so I `#define` it to 0.
