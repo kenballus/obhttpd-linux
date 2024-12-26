@@ -3,6 +3,7 @@
 #include <unistd.h> // for getpid
 #include <stdlib.h> // for exit
 #include <limits.h> // for PATH_MAX
+#include <string.h> // for strlen
 
 #include "compat.h"
 
@@ -55,6 +56,29 @@ void bufferevent_read_pressure_cb(struct evbuffer *buf, size_t old, size_t now, 
     }
 }
 
-int crypt_checkpass(const char *, const char *) {
+// Pulled from src/lib/libc/crypt/cryptutil.c
+int crypt_checkpass(const char *pass, const char *goodhash) {
+    char dummy[_PASSWORD_LEN];
+
+    if (goodhash == NULL) {
+        /* fake it */
+        goto fake;
+    }
+
+    /* empty password */
+    if (strlen(goodhash) == 0 && strlen(pass) == 0)
+        return 0;
+
+    if (goodhash[0] == '$' && goodhash[1] == '2') {
+        if (bcrypt_checkpass(pass, goodhash))
+            goto fail;
+        return 0;
+    }
+
+    /* unsupported. fake it. */
+fake:
+    bcrypt_newhash(pass, 8, dummy, sizeof(dummy));
+fail:
+    errno = EACCES;
     return -1;
 }

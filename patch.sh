@@ -9,10 +9,10 @@ set -euo pipefail
 [[ -v OPENBSD_SRC_REPO ]] || OPENBSD_SRC_REPO='https://github.com/openbsd/src'
 
 # All .c files except compat.c
-C_SRC="control.c server_fcgi.c httpd.c imsg-buffer.c log.c proc.c server_file.c config.c imsg.c logger.c patterns.c server.c server_http.c fmt_scaled.c"
+C_SRC="control.c server_fcgi.c httpd.c imsg-buffer.c log.c proc.c server_file.c config.c imsg.c logger.c patterns.c server.c server_http.c fmt_scaled.c timingsafe_bcmp.c blowfish.c bcrypt.c"
 
 # All .h files except compat.h
-H_SRC="http.h imsg.h patterns.h httpd.h util.h"
+H_SRC="http.h imsg.h patterns.h httpd.h util.h blf.h"
 
 C_AND_H_SRC="$C_SRC $H_SRC"
 
@@ -24,6 +24,8 @@ rm -f $ALL_SRC
 [ -d src ] || git clone "$OPENBSD_SRC_REPO"
 
 pushd src
+echo "source branch: $OPENBSD_SRC_BRANCH"
+echo "source version: $OPENBSD_SRC_VERSION"
 git pull origin "$OPENBSD_SRC_BRANCH"
 git checkout "$OPENBSD_SRC_VERSION"
 popd
@@ -31,6 +33,10 @@ popd
 cp src/usr.sbin/httpd/* .
 cp src/lib/libutil/imsg-buffer.c src/lib/libutil/imsg.c src/lib/libutil/imsg.h .
 cp src/lib/libutil/fmt_scaled.c src/lib/libutil/util.h .
+cp src/lib/libc/string/timingsafe_bcmp.c .
+cp ./src/lib/libc/crypt/blowfish.c .
+cp src/lib/libc/crypt/bcrypt.c .
+cp src/include/blf.h .
 
 # Use libbsd tree.h (not provided on Linux)
 sed -i 's/#include <sys\/tree.h>/#include <bsd\/sys\/tree.h>/' $ALL_SRC
@@ -87,7 +93,7 @@ sed -i 's/#include <sys\/time.h>/#include <bsd\/sys\/time.h>/' server_file.c
 sed -i 's/\(LDADD=.*\)/\1\nLDADD+=\t\t-lbsd -lresolv/' Makefile
 
 # Add the new source files to the Makefile
-sed -i 's/\(SRCS=.*\)/\1\nSRCS+=\t\tcompat.c imsg.c imsg-buffer.c fmt_scaled.c/' Makefile
+sed -i 's/\(SRCS=.*\)/\1\nSRCS+=\t\tcompat.c imsg.c imsg-buffer.c fmt_scaled.c timingsafe_bcmp.c blowfish.c bcrypt.c/' Makefile
 
 # Silence some warnings in the Makefile
 sed -i 's/\(CFLAGS+=[ \t]*-Wsign-compare -Wcast-qual\)/\1 -Wno-format -Wno-cpp -Wno-comment/' Makefile

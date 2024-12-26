@@ -3,22 +3,37 @@
 #include <event.h>  // for struct event
 #include <net/if.h> // for IF_NAMESIZE
 
+// This is just a noreturn macro that OpenBSD
+// uses that doesn't exist elsewhere
 #define __dead __attribute__((noreturn))
 
-int getdtablecount(void);
+// This is a declaration macro that we don't need
+// because this is not a library
+#define DEF_WEAK(...)
 
-int bufferevent_add(struct event *ev, int timeout);
-
-void bufferevent_read_pressure_cb(struct evbuffer *buf, size_t old, size_t now, void *arg);
-
-int crypt_checkpass(const char *, const char *);
-
+// We patch out calls to pledge because it's
+// not a thing on Linux
 #define pledge(...) (0)
+
+// libc has a bunch of wrapper names for internal use
+// we patch them out
+#define	WRAP(x)			(x)
 
 // This is an unsupported TCP flag on Linux.
 // We fatal when the user asks for this flag,
 // but we still need it to be defined
 #define TCP_SACK_ENABLE (-1)
+
+// Pulled from src/include/limits.h
+#define	_PASSWORD_LEN		128	/* max length, not counting NUL */
+
+int getdtablecount(void);
+int bufferevent_add(struct event *ev, int timeout);
+void bufferevent_read_pressure_cb(struct evbuffer *buf, size_t old, size_t now, void *arg);
+int crypt_checkpass(const char *pass, const char *goodhash);
+int timingsafe_bcmp(const void *b1, const void *b2, size_t n);
+int bcrypt_checkpass(const char *pass, const char *goodhash);
+int bcrypt_newhash(const char *pass, int log_rounds, char *hash, size_t hashlen);
 
 // This IFGROUP stuff is here to silence a compiler
 // error that only affects dead code.
