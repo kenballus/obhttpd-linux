@@ -1,5 +1,8 @@
 #pragma once
 
+// Won't build on Arch without this due to lack of IOV_MAX
+#define _GNU_SOURCE
+
 #include <event.h>  // for struct event
 #include <net/if.h> // for IF_NAMESIZE
 
