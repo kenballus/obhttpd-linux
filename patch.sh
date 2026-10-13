@@ -1,15 +1,16 @@
 #!/bin/bash
 
 set -euo pipefail
+set -x
 
-[[ -v OPENBSD_SRC_VERSION ]] || OPENBSD_SRC_VERSION='5630923570a00c7e1af81e4d0e387dfb2f027fd1'
+[[ -v OPENBSD_SRC_VERSION ]] || OPENBSD_SRC_VERSION='84bf78a6967c0b1c1b62ebb332255dc0265b87fb'
 
 [[ -v OPENBSD_SRC_BRANCH ]] || OPENBSD_SRC_BRANCH='master'
 
 [[ -v OPENBSD_SRC_REPO ]] || OPENBSD_SRC_REPO='https://github.com/openbsd/src'
 
 # All .c files except compat.c
-C_SRC="control.c server_fcgi.c httpd.c imsg-buffer.c log.c proc.c server_file.c config.c imsg.c logger.c patterns.c server.c server_http.c fmt_scaled.c timingsafe_bcmp.c blowfish.c bcrypt.c"
+C_SRC="server_fcgi.c httpd.c imsg-buffer.c log.c proc.c server_file.c config.c imsg.c logger.c patterns.c server.c server_http.c fmt_scaled.c timingsafe_bcmp.c blowfish.c bcrypt.c"
 
 # All .h files except compat.h
 H_SRC="http.h imsg.h patterns.h httpd.h util.h blf.h"

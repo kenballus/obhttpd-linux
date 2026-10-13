@@ -37,6 +37,7 @@ int crypt_checkpass(const char *pass, const char *goodhash);
 int timingsafe_bcmp(const void *b1, const void *b2, size_t n);
 int bcrypt_checkpass(const char *pass, const char *goodhash);
 int bcrypt_newhash(const char *pass, int log_rounds, char *hash, size_t hashlen);
+int getexecpath(char *buf, size_t bufsize);
 
 // This IFGROUP stuff is here to silence a compiler
 // error that only affects dead code.

@@ -12,6 +12,15 @@ static void fatal(const char *emsg) {
     exit(1);
 }
 
+// Just a hack. Not safe to use in other programs, but probably fine here.
+int getexecpath(char *buf, size_t bufsize) {
+    if (bufsize == 0) {
+        return -1;
+    }
+    *buf = 0;
+    return 0;
+}
+
 // Pulled from tmux's compat/getdtablecount.c
 int getdtablecount(void) {
     char path[PATH_MAX];
