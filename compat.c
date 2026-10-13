@@ -3,7 +3,7 @@
 #include <unistd.h> // for getpid
 #include <stdlib.h> // for exit
 #include <limits.h> // for PATH_MAX
-#include <string.h> // for strlen
+#include <string.h> // for strlen, memcpy
 
 #include "compat.h"
 
@@ -12,12 +12,12 @@ static void fatal(const char *emsg) {
     exit(1);
 }
 
-// Just a hack. Not safe to use in other programs, but probably fine here.
 int getexecpath(char *buf, size_t bufsize) {
-    if (bufsize == 0) {
+    static char const execpath[] = "/proc/self/exe";
+    if (bufsize < sizeof(execpath)) {
         return -1;
     }
-    *buf = 0;
+    memcpy(buf, execpath, sizeof(execpath));
     return 0;
 }
 
